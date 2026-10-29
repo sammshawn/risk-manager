@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Free position size calculator for Deriv and forex traders. Know your risk before you trade." />
+  <title>Risk Manager — Position Size Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        Risk Manager
+      </div>
+      <div class="topbar-tag">Free · No signup</div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="hero-mini">
+      <h1>Know your risk <span class="highlight">before</span> you trade.</h1>
+      <p>Enter your balance, risk %, and stop-loss. Get the exact stake size to protect your account.</p>
+    </section>
+
+    <section class="calculator">
+
+      <!-- INPUTS -->
+      <div class="calc-card calc-inputs">
+        <h2>Your trade</h2>
+
+        <label class="field">
+          Account balance
+          <div class="input-wrap">
+            <span class="input-prefix">$</span>
+            <input type="number" id="balance" value="1000" min="1" step="1" />
+          </div>
+        </label>
+
+        <label class="field">
+          Risk per trade
+          <div class="input-wrap">
+            <input type="number" id="riskPct" value="1" min="0.1" max="10" step="0.1" />
+            <span class="input-suffix">%</span>
+          </div>
+          <span class="field-hint" id="riskHint">$10 risk on a $1000 account</span>
+        </label>
+
+        <label class="field">
+          Stop-loss (in pips / points)
+          <div class="input-wrap">
+            <input type="number" id="stopLoss" value="20" min="1" step="1" />
+            <span class="input-suffix">pips</span>
+          </div>
+        </label>
+
+        <label class="field">
+          Value per pip
+          <div class="input-wrap">
+            <span class="input-prefix">$</span>
+            <input type="number" id="pipValue" value="1" min="0.01" step="0.01" />
+          </div>
+          <span class="field-hint">For Deriv synthetics, most have $1 per pip on standard lots</span>
+        </label>
+
+        <button class="btn btn-outline btn-reset" id="resetBtn">Reset to defaults</button>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="calc-card calc-results">
+        <h2>Position size</h2>
+
+        <div class="result-big">
+          <div class="result-label">Stake per trade</div>
+          <div class="result-value" id="stake">$0.00</div>
+          <div class="result-sub" id="stakeSub">0% of your account</div>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-item">
+            <div class="result-item-label">Risk amount</div>
+            <div class="result-item-value" id="riskAmount">$0.00</div>
+          </div>
+          <div class="result-item">
+            <div class="result-item-label">Position size</div>
+            <div class="result-item-value" id="posSize">0.00 lots</div>
+          </div>
+          <div class="result-item">
+            <div class="result-item-label">Max loss</div>
+            <div class="result-item-value danger" id="maxLoss">-$0.00</div>
+          </div>
+          <div class="result-item">
+            <div class="result-item-label">Consecutive losses to $0</div>
+            <div class="result-item-value" id="lossesToZero">—</div>
+          </div>
+        </div>
+
+        <div class="risk-meter">
+          <div class="risk-meter-label">
+            <span>Risk level</span>
+            <span id="riskLevelText">Safe</span>
+          </div>
+          <div class="risk-meter-bar">
+            <div class="risk-meter-fill" id="riskMeterFill" style="width: 10%;"></div>
+          </div>
+          <div class="risk-meter-scale">
+            <span>0%</span>
+            <span>1%</span>
+            <span>2%</span>
+            <span>5%</span>
+            <span>10%+</span>
+          </div>
+        </div>
+
+        <div class="advice-box" id="adviceBox">
+          <span class="advice-icon">✅</span>
+          <span id="adviceText">Your risk is well-managed. Keep it up.</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- WHAT-IF PREVIEW -->
+    <section class="whatif">
+      <h2>If you take 5 trades in a row…</h2>
+      <p class="muted">Same stake, same risk. See how your account evolves on a losing streak vs. a winning streak.</p>
+
+      <div class="whatif-grid">
+        <div class="whatif-card lose">
+          <h3>🔴 5 losses in a row</h3>
+          <div class="whatif-result">
+            <span class="whatif-label">After:</span>
+            <span class="whatif-value" id="afterLosses">$0.00</span>
+          </div>
+          <div class="whatif-sub" id="afterLossesSub">—</div>
+        </div>
+        <div class="whatif-card win">
+          <h3>🟢 5 wins in a row</h3>
+          <div class="whatif-result">
+            <span class="whatif-label">After:</span>
+            <span class="whatif-value" id="afterWins">$0.00</span>
+          </div>
+          <div class="whatif-sub" id="afterWinsSub">—</div>
+        </div>
+      </div>
+
+      <div class="whatif-note">
+        💡 The math shows why <strong>1–2% risk</strong> is the professional standard. You can survive 20+ losses in a row and still trade.
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <h2>Want the full version?</h2>
+      <p>The paid version includes a trade journal, risk analytics, PDF reports, and automatic CSV export — built for serious traders.</p>
+      <div class="cta-buttons">
+        <a href="mailto:sammshawn1@gmail.com?subject=Risk%20Manager%20Pro" class="btn btn-primary">Get Risk Manager Pro →</a>
+        <a href="https://sammshawn.github.io/deriv-scanner/" target="_blank" rel="noopener" class="btn btn-outline">Try Digit Scanner</a>
+      </div>
+      <p class="cta-note">💬 DM me <strong>"RISK"</strong> on TikTok for a free strategy review.</p>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Risk Manager · Built by Samm Shawn · Not financial advice</p>
+    <p class="footer-links">
+      <a href="https://github.com/sammshawn/risk-manager" target="_blank" rel="noopener">GitHub</a>
+      <span>·</span>
+      <a href="https://sammshawn.github.io/portofolio/" target="_blank" rel="noopener">Portfolio</a>
+      <span>·</span>
+      <a href="https://sammshawn.github.io/deriv-scanner/" target="_blank" rel="noopener">Digit Scanner</a>
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
